@@ -9,19 +9,22 @@ def inorder(root,traversal=[]):
     if root is None:
         return None
 
-    if root.left:
-        inorder(root.left)
-            
-   
-    traversal.append(root.value)
+    stack = [ (root,float('-inf'),float('inf')) ]
 
-    if root.right:
-        inorder(root.right)
+    while stack:
+        node,min_val,max_val = stack.pop()
 
-    if len(traversal) == 1:
-        return True    
+        if node.left:
+            if node.left.val >= node.val or node.left.val <= min_val:
+                return False
+            stack.append(( node.left, min_val, node.val))
 
-    return(all([traversal[i] < traversal[i+1] for i in range(len(traversal) - 1)]))
+        if node.right:
+            if node.right.val <= node.val or node.right.val >= max_val:
+                return False
+            stack.append((node.right, node.val, max_val))
+
+    return True
 
 if __name__=='__main__':
 
